@@ -1,12 +1,16 @@
-from datetime import datetime, timedelta
-from task import Task
+from datetime import datetime, timedelta, date
+from .task import Task
 
 class Project:
-    def __init__(self, title: str, description: str, deadline: datetime) -> None:
+    def __init__(self, title: str, description: str, deadline: date) -> None:
         self.title = title
         self.description = description
+        
+        if not isinstance(deadline, date) or isinstance(deadline, datetime):
+            raise ValueError("deadline должен быть производным от класса datetime.date")
+    
         # Проверка, что дедлайн как минимум на один день больше сегодняшней даты
-        if deadline < datetime.now() + timedelta(days=1):
+        if deadline < (datetime.now() + timedelta(days=1)).date():
             raise ValueError("Дедлайн должен быть как минимум на один день больше сегодняшней даты.")
         
         self.deadline = deadline
@@ -14,11 +18,9 @@ class Project:
 
     def add_task(self, task: Task) -> None:
         if task.deadline > self.deadline:
-            f_task_deadline = task.deadline.strftime("%Y-%m-%d")
-            f_project_deadline = self.deadline.strftime("%Y-%m-%d")
             raise ValueError(f"""Дедлайн для задачи {task.title} больше, 
                              чем дедлайн проекта {self.title} 
-                             ({f_task_deadline} > {f_project_deadline})""") 
+                             ({task.deadline} > {self.deadline})""") 
         self.tasks.append(task)
 
     def show_task_list(self) -> None:
