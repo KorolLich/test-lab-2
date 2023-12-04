@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from enum import Enum
 
 class StatusType(Enum):
@@ -12,12 +12,15 @@ class StatusType(Enum):
         return self.value
 
 class Task:
-    def __init__(self, title: str, description: str, deadline: datetime) -> None:
+    def __init__(self, title: str, description: str, deadline: date) -> None:
         self.title = title
         self.description = description
 
+        if not isinstance(deadline, date) or isinstance(deadline, datetime):
+            raise ValueError("deadline должен быть производным от класса datetime.date")
+    
         # Проверка, что дедлайн как минимум на один день больше сегодняшней даты
-        if deadline < datetime.now() + timedelta(days=1):
+        if deadline < (datetime.now() + timedelta(days=1)).date():
             raise ValueError("Дедлайн должен быть как минимум на один день больше сегодняшней даты.")
         
         self.deadline = deadline
@@ -35,7 +38,7 @@ class Task:
         return True
     
     def get_days_before_deadline(self) -> int:
-        current_date = datetime.now()
+        current_date = datetime.now().date()
 
         # Если сегодняшняя дата больше дедлайна
         if current_date >= self.deadline:
@@ -49,9 +52,8 @@ class Task:
         
 
     def get_info(self):
-        formated_deadline = self.deadline.strftime("%Y-%m-%d")
         return f"Название задачи: {self.title}\nОписание: {self.description}\n" \
-               f"Срок выполнения: {formated_deadline}\nСтатус: {self.status}"
+               f"Срок выполнения: {self.deadline}\nСтатус: {self.status}"
 
 # Пример использования класса
 if __name__ == "__main__":
@@ -59,7 +61,7 @@ if __name__ == "__main__":
     # Создаем экземпляр задачи
     task1 = Task("Разработка функционала", 
                  "Написать код для нового функционала", 
-                 datetime.now() + timedelta(days=3))
+                 (datetime.now() + timedelta(days=3)).date())
 
     print("Дней до дедлайна:", task1.get_days_before_deadline())
 
