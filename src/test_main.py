@@ -6,7 +6,7 @@ if __name__ == '__main__':
     from tests.integration_tests import TestIntegrationMethods
     from tests.attestation_tests import TestMainMethods
 
-    # Создаем тестовые наборы для обоих классов
+    # Создаем тестовые наборы
     task_test_suite = unittest.TestLoader().loadTestsFromTestCase(TestTaskMethods)
     project_test_suite = unittest.TestLoader().loadTestsFromTestCase(TestProjectMethods)
     project_management_test_suite = unittest.TestLoader().loadTestsFromTestCase(TestProjectManagementMethods)
