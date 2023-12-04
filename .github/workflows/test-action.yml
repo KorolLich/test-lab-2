@@ -26,8 +26,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         # github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
-  sonarcloud:
-    name: SonarCloud
+    - name: SonarCloud
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
