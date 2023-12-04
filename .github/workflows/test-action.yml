@@ -37,14 +37,14 @@ jobs:
       - name: Install coverage and coveralls
         run: pip install coverage
 
+      - name: Run tests
+        run: |
+          coverage run -m unittest src/test_main.py
+          coverage xml
+          
       - name: Upload coverage data to coveralls.io
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             pip install coveralls
             coveralls --service=github
-
-      - name: Run tests
-        run: |
-          coverage run -m unittest src/test_main.py
-          coverage xml
