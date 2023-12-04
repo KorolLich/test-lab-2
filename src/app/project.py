@@ -23,12 +23,13 @@ class Project:
                              ({task.deadline} > {self.deadline})""") 
         self.tasks.append(task)
 
-    def show_task_list(self) -> None:
-        print(f"Список задач в проекте '{self.title}':")
+    def get_info(self) -> str:
+        result = f"Список задач в проекте '{self.title}':\n"
         for index, task in enumerate(self.tasks):
-            print('Номер задачи: ', index)
-            print(task.get_info())
-            print("----")
+            result += f'Номер задачи: {index}\n'
+            result += task.get_info() + '\n----\n'
+        return result
+
 
 # Пример использования
 if __name__ == "__main__":
@@ -44,4 +45,4 @@ if __name__ == "__main__":
     project1.add_task(task2)
 
     # Выводим информацию о задачах в проекте
-    project1.show_task_list()
+    print(project1.get_info())

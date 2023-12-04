@@ -53,7 +53,7 @@ class Task:
 
     def get_info(self):
         return f"Название задачи: {self.title}\nОписание: {self.description}\n" \
-               f"Срок выполнения: {self.deadline}\nСтатус: {self.status}"
+               f"Срок выполнения: {self.deadline}\nСтатус: {self.status}\n"
 
 # Пример использования класса
 if __name__ == "__main__":

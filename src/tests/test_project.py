@@ -15,7 +15,7 @@ class TestProjectMethods(unittest.TestCase):
 
         # Тест создания проекта с некорректным deadline (должен быть datetime.date)
         with self.assertRaises(ValueError):
-            Project("Invalid Deadline Project", "Test Description", datetime.now().date())
+            Project("Invalid Deadline Project", "Test Description", datetime.now())
 
     def test_add_task(self):
         # Создаем проект
@@ -37,6 +37,24 @@ class TestProjectMethods(unittest.TestCase):
         # Тест добавления задачи с дедлайном равным дедлайну проекта
         project.add_task(task_same)
         self.assertIn(task_same, project.tasks)
+
+    def test_get_info(self):
+        # Создаем проект
+        project = Project("Test Project", "Test Description", (datetime.now() + timedelta(days=5)).date())
+
+        # Создаем задачи
+        task1 = Task("Task 1", "Test Description", (datetime.now() + timedelta(days=1)).date())
+        task2 = Task("Task 2", "Test Description", (datetime.now() + timedelta(days=3)).date())
+
+        # Добавляем задачи в проект и проверяем их в get_info
+        project.add_task(task1)
+        result = project.get_info()
+        self.assertIn(task1.get_info(), result)
+
+        project.add_task(task2)
+        result = project.get_info()
+        self.assertIn(task1.get_info(), result)
+        self.assertIn(task2.get_info(), result)
 
 if __name__ == '__main__':
     unittest.main()
