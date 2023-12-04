@@ -18,7 +18,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
+          
+  - name: Coveralls
+    run: 
+    
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -39,5 +42,4 @@ jobs:
       - name: Run tests
         run: |
           coverage run -m unittest src/test_main.py
-
           coverage xml
