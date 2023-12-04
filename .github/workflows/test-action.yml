@@ -1,32 +1,8 @@
-name: Python CI
-
+name: Build
 on: [push]
-
 jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/setup-python@v3
-      with:
-        python-version: 3.8
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-
-    - name: Run tests with coverage
-      run: |
-        coverage run -m unittest discover -s tests/
-        coverage xml
-
-    - name: Upload coverage to coveralls
-      uses: coverallsapp/github-action@v2
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        # github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
-
-    - name: SonarCloud
+  sonarcloud:
+    name: SonarCloud
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -37,7 +13,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-    - name: Deploy
-      if: success()
-      run: ./deploy.sh
