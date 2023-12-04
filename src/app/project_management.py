@@ -1,19 +1,18 @@
-from project import Project
+from .project import Project
 from datetime import datetime
-from task import Task
+from .task import Task
 
 class ProjectManagement:
     def __init__(self) -> None:
         self.projects = []  # Список проектов в системе
 
-    def create_project(self, title: str, description: str, deadline: datetime) -> None:
-        for project in self.projects:
-            if project.title == title:
+    def add_project(self, project: Project) -> None:
+        for existing_project in self.projects:
+            if existing_project.title == project.title:
                 raise ValueError("Название проекта должно быть уникальным")
-            
-        project = Project(title, description, deadline)
+        
         self.projects.append(project)
-        print(f"Проект '{title}' создан.")
+        print(f"Проект '{project.title}' добавлен.")
 
     def add_task_to_project(self, project_title: str, task: Task) -> None:
         for project in self.projects:
@@ -21,18 +20,16 @@ class ProjectManagement:
                 project.add_task(task)
                 print(f"Задача добавлена в проект '{project_title}'.")
                 return
-        print(f"Проект '{project_title}' не найден.")
+        raise ValueError(f"Проекта с названием {project_title} не существует")
 
-    def show_project_list(self) -> None:
-        print("Список проектов в системе:")
+    def get_info(self) -> str:
+        result = "Список проектов в системе:\n"
         for project in self.projects:
-            print(f"Проект: {project.title}")
-            f_deadline = project.deadline.strftime("%Y-%m-%d")
-            print(f"Дедлайн: {f_deadline}")
+            result += f"Проект: {project.title}\n"
+            result += f"Дедлайн: {project.deadline}\n"
+            result += project.get_info() + "\n-------------------------\n"
+        return result
 
-            project.show_task_list()
-
-            print("----")
     
     def delete_project(self, project_title: str) -> None:
         for project in self.projects:
@@ -40,7 +37,7 @@ class ProjectManagement:
                 self.projects.remove(project)
                 print(f"Проект '{project_title}' удален.")
                 return
-        print(f"Проект '{project_title}' не найден.")
+        raise ValueError(f"Проекта с названием {project_title} не существует")
 
 
 # Пример использования

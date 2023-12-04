@@ -27,7 +27,7 @@ class Project:
         result = f"Список задач в проекте '{self.title}':\n"
         for index, task in enumerate(self.tasks):
             result += f'Номер задачи: {index}\n'
-            result += task.get_info() + '\n----\n'
+            result += task.get_info() + '\n-------\n'
         return result
 
 
