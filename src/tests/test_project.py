@@ -7,10 +7,10 @@ class TestProjectMethods(unittest.TestCase):
 
     def test_create_project(self):
         # Тест создания проекта с корректными параметрами
-        project = Project("Test Project", "Test Description", datetime(2023, 12, 31).date())
+        project = Project("Test Project", "Test Description", (datetime.now() + timedelta(days=5)).date())
         self.assertEqual(project.title, "Test Project")
         self.assertEqual(project.description, "Test Description")
-        self.assertEqual(project.deadline, date(2023, 12, 31))
+        self.assertEqual(project.deadline, (datetime.now() + timedelta(days=5)).date())
         self.assertEqual(project.tasks, [])
 
         # Тест создания проекта с некорректным deadline (должен быть datetime.date)
@@ -19,12 +19,12 @@ class TestProjectMethods(unittest.TestCase):
 
     def test_add_task(self):
         # Создаем проект
-        project = Project("Test Project", "Test Description", datetime(2023, 12, 31).date())
+        project = Project("Test Project", "Test Description", (datetime.now() + timedelta(days=5)).date())
 
         # Создаем задачи
-        task_before = Task("Task Before", "Test Description", datetime(2023, 12, 15).date())
-        task_after = Task("Task After", "Test Description", datetime(2024, 1, 1).date())
-        task_same = Task("Task Same", "Test Description", datetime(2023, 12, 31).date())
+        task_before = Task("Task Before", "Test Description", (datetime.now() + timedelta(days=4)).date())
+        task_after = Task("Task After", "Test Description", (datetime.now() + timedelta(days=6)).date())
+        task_same = Task("Task Same", "Test Description", (datetime.now() + timedelta(days=5)).date())
 
         # Тест добавления задачи с дедлайном до дедлайна проекта
         project.add_task(task_before)
