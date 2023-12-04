@@ -18,9 +18,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          
-  - name: Coveralls
-    run: 
+
+      - name: Coveralls
+        run: coveralls -t ${{ secrets.COVERALLS_REPO_TOKEN }}
     
   test:
     name: Test
