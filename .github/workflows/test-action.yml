@@ -37,12 +37,10 @@ jobs:
       - name: Install coverage and coveralls
         run: pip install coverage
 
-      - name: Add tests directory to PYTHONPATH
-        run: export PYTHONPATH=$PYTHONPATH:/src/tests
 
       - name: Run tests
         run: |
-          coverage run -m unittest src/test_main.py
+          coverage run --source=. -m unittest src/test_main.py
           coverage xml
 
       - name: Upload coverage data to coveralls.io
