@@ -1,7 +1,12 @@
 from datetime import datetime, timedelta
-from .app.task import Task, StatusType
-from .app.project import Project
-from .app.project_management import ProjectManagement
+if __name__ == '__main__' or __name__ == 'main':
+    from app.task import Task, StatusType
+    from app.project import Project
+    from app.project_management import ProjectManagement
+else:
+    from .app.task import Task, StatusType
+    from .app.project import Project
+    from .app.project_management import ProjectManagement
 
 def create_project(project_management):
     title = input("Введите название проекта: ")

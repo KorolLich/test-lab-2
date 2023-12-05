@@ -2,10 +2,16 @@ import unittest
 from unittest.mock import patch
 from io import StringIO
 from datetime import datetime, timedelta
-from .app.project import Project
-from .app.task import Task, StatusType
-from .app.project_management import ProjectManagement
-from . import main  # Импортируем main.py для тестирования его функциональности
+if __name__ == '__main__':
+    from app.project import Project
+    from app.task import Task, StatusType
+    from app.project_management import ProjectManagement
+    import main  # Импортируем main.py для тестирования его функциональности
+else:
+    from .app.project import Project
+    from .app.task import Task, StatusType
+    from .app.project_management import ProjectManagement
+    from . import main  # Импортируем main.py для тестирования его функциональности
 
 class TestMainMethods(unittest.TestCase):
     """
@@ -173,6 +179,74 @@ class TestProjectMethods(unittest.TestCase):
         result = project.get_info()
         self.assertIn(task1.get_info(), result)
         self.assertIn(task2.get_info(), result)
+    
+    def test_is_similar_tasks_true(self):
+        project = Project("Project 1", "Description 1", (datetime.now() + timedelta(days=8)).date())
+        task1 = Task("Task 1", "Description 1", (datetime.now() + timedelta(days=6)).date())
+        project.add_task(task1)
+        
+        # Добавим задачу, которая похожа на существующую
+        similar_task = Task("Task 1 New", "Description 1", (datetime.now() + timedelta(days=7)).date())
+        self.assertTrue(project.is_similar_tasks(similar_task))
+
+    def test_is_similar_tasks_false(self):
+        project = Project("Project 2", "Description 2", (datetime.now() + timedelta(days=8)).date())
+        task1 = Task("Task 1", "Description 2", (datetime.now() + timedelta(days=6)).date())
+        project.add_task(task1)
+        
+        # Добавим задачу, которая не похожа на существующую
+        dissimilar_task = Task("New 3", "Description 3", (datetime.now() + timedelta(days=7)).date())
+        self.assertFalse(project.is_similar_tasks(dissimilar_task))
+
+    def test_new_task_full_in_another_task(self):
+        project = Project("Project 2", "Description 2", (datetime.now() + timedelta(days=8)).date())
+        task1 = Task("Очень длинное название, много лишних слов не требуется чтобы описать всю боль",
+                      "Description 2", (datetime.now() + timedelta(days=6)).date())
+        project.add_task(task1)
+        
+        # Добавим задачу, название которой полностью копирует существующую
+        similar_task = Task("Очень", "Description 3", (datetime.now() + timedelta(days=7)).date())
+        self.assertTrue(project.is_similar_tasks(similar_task))
+
+    def test_another_task_full_in_new_task(self):
+        project = Project("Project 2", "Description 2", (datetime.now() + timedelta(days=8)).date())
+        task1 = Task("угабуга", "Description 2", (datetime.now() + timedelta(days=6)).date())
+        project.add_task(task1)
+        
+        # Добавим задачу
+        similar_task = Task("Слшком много букав, ыыы, дааа, ееее, угабуга", "Description 3", (datetime.now() + timedelta(days=7)).date())
+        self.assertTrue(project.is_similar_tasks(similar_task))
+
+    def test_strange_symbols_similarity(self):
+        project = Project("Project 2", "Description 2", (datetime.now() + timedelta(days=8)).date())
+        task1 = Task("^*^%&^%*слово*&$*^*^$*)(*)__0--", "Description 2", (datetime.now() + timedelta(days=6)).date())
+        project.add_task(task1)
+        
+        # Добавим задачу
+        similar_task = Task("слово", "Description 3", (datetime.now() + timedelta(days=7)).date())
+        self.assertTrue(project.is_similar_tasks(similar_task))
+
+    def test_add_task_similar_task_not_added(self):
+        project = Project("Project 3", "Description 3", (datetime.now() + timedelta(days=7)).date())
+        task1 = Task("Task 1", "Description 3", (datetime.now() + timedelta(days=5)).date())
+        project.add_task(task1)
+        
+        # Добавим похожую задачу, она не должна быть добавлена
+        similar_task = Task("Task 1 New", "Description 3", (datetime.now() + timedelta(days=4)).date())
+        project.add_task(similar_task)
+        
+        self.assertEqual(len(project.tasks), 1)
+
+    def test_add_task_dissimilar_task_added(self):
+        project = Project("Project 4", "Description 4", (datetime.now() + timedelta(days=8)).date())
+        task1 = Task("Task 1", "Description 4", (datetime.now() + timedelta(days=6)).date())
+        project.add_task(task1)
+        
+        # Добавим не похожую задачу, она должна быть добавлена
+        dissimilar_task = Task("New 3", "Description 4", (datetime.now() + timedelta(days=7)).date())
+        project.add_task(dissimilar_task)
+        
+        self.assertEqual(len(project.tasks), 2)
 
 class TestProjectManagementMethods(unittest.TestCase):
     """
