@@ -38,21 +38,3 @@ class ProjectManagement:
                 print(f"Проект '{project_title}' удален.")
                 return
         raise ValueError(f"Проекта с названием {project_title} не существует")
-
-
-# Пример использования
-if __name__ == "__main__":
-    project_management = ProjectManagement()
-
-    # Создаем проекты
-    project_management.create_project("Основной проект", "Разработка нового продукта", datetime(2023, 12, 31))
-    project_management.create_project("Второй проект", "Еще один проект", datetime(2023, 12, 15))
-
-    # Создаем задачу
-    task = Task("Разработка функционала", "Написать код для нового функционала", datetime(2023, 12, 15))
-
-    # Добавляем задачу в проект
-    project_management.add_task_to_project("Основной проект", task)
-
-    # Выводим список проектов
-    project_management.show_project_list()

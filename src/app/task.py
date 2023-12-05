@@ -55,23 +55,3 @@ class Task:
         return f"Название задачи: {self.title}\nОписание: {self.description}\n" \
                f"Срок выполнения: {self.deadline}\nСтатус: {self.status}\n"
 
-# Пример использования класса
-if __name__ == "__main__":
-
-    # Создаем экземпляр задачи
-    task1 = Task("Разработка функционала", 
-                 "Написать код для нового функционала", 
-                 (datetime.now() + timedelta(days=3)).date())
-
-    print("Дней до дедлайна:", task1.get_days_before_deadline())
-
-    # Выводим информацию о задаче до изменения статуса
-    print("Информация о задаче до изменения статуса:")
-    print(task1.get_info())
-
-    # Изменяем статус задачи
-    task1.change_status(StatusType.IN_PROGRESS)
-
-    # Выводим информацию о задаче после изменения статуса
-    print("\nИнформация о задаче после изменения статуса:")
-    print(task1.get_info())
