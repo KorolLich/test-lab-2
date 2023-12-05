@@ -1,3 +1,5 @@
+import sys
+sys.path.append('./tests')
 import unittest
 from tests.test_task import TestTaskMethods
 from tests.test_project import TestProjectMethods
