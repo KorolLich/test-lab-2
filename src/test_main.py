@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from .app.project import Project
 from .app.task import Task, StatusType
 from .app.project_management import ProjectManagement
-import main  # Импортируем main.py для тестирования его функциональности
+from . import main  # Импортируем main.py для тестирования его функциональности
 
 class TestMainMethods(unittest.TestCase):
     """
